@@ -5,13 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NSM Social Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js" crossorigin></script>
   <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    html, body, #root { min-height: 100vh; width: 100%; }
+  </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
-  <div id="root"></div>
+  <div id="root"><p style="padding:20px;color:#666">Loading dashboard...</p></div>
+  <script>
+    // Verify all libraries loaded before running app
+    window.addEventListener('DOMContentLoaded', function() {
+      var missing = [];
+      if (typeof React === 'undefined') missing.push('React');
+      if (typeof ReactDOM === 'undefined') missing.push('ReactDOM');
+      if (typeof Recharts === 'undefined') missing.push('Recharts');
+      if (missing.length > 0) {
+        document.getElementById('root').innerHTML = '<p style="color:red;padding:20px">Failed to load: ' + missing.join(', ') + '. Make sure you have internet access.</p>';
+      }
+    });
+  </script>
   <script type="text/babel">
     const { useState } = React;
     const {
@@ -434,8 +450,19 @@
       );
     };
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<SocialDashboard />);
+    // Debug: verify libraries loaded
+    console.log('React:', typeof React);
+    console.log('ReactDOM:', typeof ReactDOM);
+    console.log('Recharts:', typeof Recharts);
+
+    try {
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<SocialDashboard />);
+      console.log('Rendered successfully');
+    } catch(e) {
+      console.error('Render error:', e);
+      document.getElementById('root').innerHTML = '<pre style="color:red;padding:20px">' + e.message + '\n' + e.stack + '</pre>';
+    }
   </script>
 </body>
 </html>

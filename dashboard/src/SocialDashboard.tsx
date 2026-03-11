@@ -16,6 +16,7 @@ const SocialDashboard = () => {
   // Page 2 toggles
   const [copyShareView, setCopyShareView] = useState('Ratio');
   const [actionsView, setActionsView] = useState('All');
+  const [engagementDenom, setEngagementDenom] = useState('Social Active User');
 
   const xAxisLine = { dataKey: "week", tick: { fontSize: 12 }, padding: { left: 30, right: 30 } };
   const xAxisBar  = { dataKey: "week", tick: { fontSize: 12 } };
@@ -78,7 +79,12 @@ const SocialDashboard = () => {
     sharesPerUser: +(w.shareActions / w.socialActive).toFixed(2),
     copiesPerUser: +(w.copyActions / w.socialActive).toFixed(2),
     connectsPerUser: +(w.connectActions / w.socialActive).toFixed(2),
+    actionsPerVisitor: +((w.shareActions + w.copyActions + w.connectActions) / w.socialVisitors).toFixed(2),
+    sharesPerVisitor: +(w.shareActions / w.socialVisitors).toFixed(2),
+    copiesPerVisitor: +(w.copyActions / w.socialVisitors).toFixed(2),
+    connectsPerVisitor: +(w.connectActions / w.socialVisitors).toFixed(2),
     avgFollowers: +(w.followers / w.socialVisitors).toFixed(2),
+    avgFollowersPerActive: +(w.followers / w.socialActive).toFixed(2),
   }));
 
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ color: string; name: string; value: number }>; label?: string }) => {
@@ -291,11 +297,6 @@ const SocialDashboard = () => {
                       ))}
                     </div>
                   </div>
-                  <p className="text-xs text-gray-500 mb-3">
-                    {bottomRightView === 'Coverage'
-                      ? 'Social Onboarded / Active Users'
-                      : 'Social Visitors / Active Users'}
-                  </p>
                   <ResponsiveContainer width="100%" height={320}>
                     <ComposedChart data={enrichedData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -410,10 +411,27 @@ const SocialDashboard = () => {
 
               {/* ── BOTTOM ROW ── */}
               <div className="grid grid-cols-2 gap-6">
-                {/* ── Bottom Left: Actions per Social Active User ── */}
+                {/* ── Bottom Left: Actions per Social Active User / Visitor ── */}
                 <div className="bg-white rounded-lg shadow p-6">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Actions per Social Active User</h3>
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {engagementDenom === 'Social Active User' ? 'Actions per Social Active User' : 'Actions per Social Visitor'}
+                      </h3>
+                      {['Social Visitor', 'Social Active User'].map(v => (
+                        <button
+                          key={v}
+                          onClick={() => setEngagementDenom(v)}
+                          className={`px-3 py-1.5 text-xs font-medium rounded transition-colors ${
+                            engagementDenom === v
+                              ? 'bg-teal-500 text-white'
+                              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          }`}
+                        >
+                          {v}
+                        </button>
+                      ))}
+                    </div>
                     <div className="flex gap-2">
                       {['All', 'Share', 'Copy', 'Connect'].map(v => (
                         <button
@@ -438,17 +456,17 @@ const SocialDashboard = () => {
                         <YAxis tick={{ fontSize: 12 }} label={{ value: 'Actions per User', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend />
-                        <Bar dataKey="sharesPerUser" stackId="a" fill="#29A8AC" name="Share" />
-                        <Bar dataKey="copiesPerUser" stackId="a" fill="#F3CA3E" name="Copy" />
-                        <Bar dataKey="connectsPerUser" stackId="a" fill="#2AC940" name="Connect" />
+                        <Bar dataKey={engagementDenom === 'Social Active User' ? 'sharesPerUser' : 'sharesPerVisitor'} stackId="a" fill="#29A8AC" name="Share" />
+                        <Bar dataKey={engagementDenom === 'Social Active User' ? 'copiesPerUser' : 'copiesPerVisitor'} stackId="a" fill="#F3CA3E" name="Copy" />
+                        <Bar dataKey={engagementDenom === 'Social Active User' ? 'connectsPerUser' : 'connectsPerVisitor'} stackId="a" fill="#2AC940" name="Connect" />
                       </BarChart>
                     ) : (
                       <BarChart
                         data={enrichedData.map(w => ({
                           week: w.week,
-                          value: actionsView === 'Share' ? w.sharesPerUser
-                               : actionsView === 'Copy' ? w.copiesPerUser
-                               : w.connectsPerUser,
+                          value: engagementDenom === 'Social Active User'
+                            ? (actionsView === 'Share' ? w.sharesPerUser : actionsView === 'Copy' ? w.copiesPerUser : w.connectsPerUser)
+                            : (actionsView === 'Share' ? w.sharesPerVisitor : actionsView === 'Copy' ? w.copiesPerVisitor : w.connectsPerVisitor),
                         }))}
                       >
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -467,10 +485,26 @@ const SocialDashboard = () => {
                   </ResponsiveContainer>
                 </div>
 
-                {/* ── Bottom Right: Avg Followers per Social Visitor ── */}
+                {/* ── Bottom Right: Followers per Social Visitor / Active User ── */}
                 <div className="bg-white rounded-lg shadow p-6">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-1">Avg Followers per Social Visitor</h3>
-                  <p className="text-xs text-gray-500 mb-4">Followers / Social Visitors — network depth</p>
+                  <div className="flex items-center gap-3 mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      {engagementDenom === 'Social Active User' ? 'Followers per Social Active User' : 'Followers per Social Visitor'}
+                    </h3>
+                    {['Social Active User', 'Social Visitor'].map(v => (
+                      <button
+                        key={v}
+                        onClick={() => setEngagementDenom(v)}
+                        className={`px-3 py-1.5 text-xs font-medium rounded transition-colors ${
+                          engagementDenom === v
+                            ? 'bg-teal-500 text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
                   <ResponsiveContainer width="100%" height={330}>
                     <ComposedChart data={enrichedData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -478,7 +512,7 @@ const SocialDashboard = () => {
                       <YAxis
                         yAxisId="left"
                         tick={{ fontSize: 12 }}
-                        label={{ value: 'Avg Followers', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+                        label={{ value: 'Followers per Visitor', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
                       />
                       <YAxis
                         yAxisId="right"
@@ -488,9 +522,9 @@ const SocialDashboard = () => {
                       />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
-                      <Bar yAxisId="left" dataKey="avgFollowers" fill="#29A8AC" name="Avg Followers per Visitor" radius={[4, 4, 0, 0]} />
+                      <Bar yAxisId="left" dataKey={engagementDenom === 'Social Active User' ? 'avgFollowersPerActive' : 'avgFollowers'} fill="#29A8AC" name={engagementDenom === 'Social Active User' ? 'Followers per Active User' : 'Followers per Visitor'} radius={[4, 4, 0, 0]} />
                       <Line yAxisId="right" type="monotone" dataKey="followers" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Total Followers" />
-                      <Line yAxisId="right" type="monotone" dataKey="socialVisitors" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Social Visitors" />
+                      <Line yAxisId="right" type="monotone" dataKey={engagementDenom === 'Social Active User' ? 'socialActive' : 'socialVisitors'} stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name={engagementDenom === 'Social Active User' ? 'Social Active Users' : 'Social Visitors'} />
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>

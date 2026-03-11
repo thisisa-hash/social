@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NSM Social Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    .tab-active { border-bottom: 2px solid #14b8a6; color: #0d9488; }
+    .tab-inactive { border-bottom: 2px solid transparent; color: #4b5563; }
+    .toggle-active { background: #14b8a6; color: white; }
+    .toggle-inactive { background: #e5e7eb; color: #374151; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="w-full bg-gray-50 p-6">
+    <div class="flex gap-6">
+
+      <!-- FILTER SIDEBAR -->
+      <div class="w-48 bg-white rounded-lg shadow p-4 h-fit" id="filterSidebar">
+        <h3 class="text-sm font-semibold text-gray-800 mb-4">Filters</h3>
+        <div class="mb-4 pb-4 border-b border-gray-200">
+          <label class="text-xs font-medium text-gray-600 mb-1 block">Period</label>
+          <select id="periodSelect" onchange="onPeriodChange()" class="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <option value="Week">Week</option>
+            <option value="Month">Month</option>
+          </select>
+        </div>
+        <div class="mb-4 pb-4 border-b border-gray-200">
+          <label class="text-xs font-medium text-gray-600 mb-2 block" id="periodLabel">Week</label>
+          <div class="space-y-2 max-h-48 overflow-y-auto" id="periodChecks"></div>
+        </div>
+        <div class="mb-4">
+          <label class="text-xs font-medium text-gray-600 mb-1 block">Country</label>
+          <select id="countrySelect" class="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <option>All</option><option>Greece</option><option>Brazil</option><option>Mexico</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="text-xs font-medium text-gray-600 mb-1 block">VIP</label>
+          <select id="vipSelect" class="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <option>All</option><option>VIP Only</option><option>Non-VIP</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div class="flex-1">
+        <div class="mb-6">
+          <h1 class="text-2xl font-bold text-gray-900">NSM Social Dashboard</h1>
+          <p class="text-sm text-gray-600 mt-1" id="subtitle">Social Feature Analytics — Week Level</p>
+          <div class="flex gap-1 mt-4 border-b border-gray-200">
+            <button id="tabNsm" onclick="switchTab('nsm')" class="px-4 py-2 text-sm font-medium tab-active">NSM</button>
+            <button id="tabEngagement" onclick="switchTab('engagement')" class="px-4 py-2 text-sm font-medium tab-inactive">Engagement</button>
+          </div>
+        </div>
+
+        <!-- NSM PAGE -->
+        <div id="pageNsm">
+          <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-lg font-semibold text-gray-800" id="nsmTopTitle">NSM — Conversion Rate %</h2>
+              <select id="nsmViewSelect" onchange="onNsmViewChange()" class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                <option value="Conversion Rate">Conversion Rate %</option>
+                <option value="Components">Active Users & Onboarded</option>
+              </select>
+            </div>
+            <canvas id="chartNsmTop" height="300"></canvas>
+          </div>
+          <div class="grid grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow p-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4">Onboardings</h3>
+              <canvas id="chartOnboardings" height="350"></canvas>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800" id="coverageTitle">Coverage %</h3>
+                <div class="flex gap-2">
+                  <button id="btnCoverage" onclick="setBottomRight('Coverage')" class="px-3 py-1.5 text-xs font-medium rounded toggle-active">Coverage</button>
+                  <button id="btnAdoption" onclick="setBottomRight('Adoption Rate')" class="px-3 py-1.5 text-xs font-medium rounded toggle-inactive">Adoption Rate</button>
+                </div>
+              </div>
+              <p class="text-xs text-gray-500 mb-3" id="coverageSubtitle">Social Onboarded / Active Users</p>
+              <canvas id="chartCoverage" height="320"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENGAGEMENT PAGE -->
+        <div id="pageEngagement" style="display:none">
+          <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-lg font-semibold text-gray-800" id="copyShareTitle">Copy-to-Share Ratio</h2>
+              <select id="copyShareSelect" onchange="onCopyShareViewChange()" class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                <option value="Ratio">Copy-to-Share Ratio</option>
+                <option value="Components">Posts & Copies</option>
+              </select>
+            </div>
+            <p class="text-xs text-gray-500 mb-3" id="copyShareSubtitle">Copies per Shared Post — how many users copy the proposed bet from a share</p>
+            <canvas id="chartCopyShare" height="300"></canvas>
+          </div>
+          <div class="grid grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Actions per Social Active User</h3>
+                <div class="flex gap-2" id="actionsButtons">
+                  <button onclick="setActionsView('All')" class="px-3 py-1.5 text-xs font-medium rounded toggle-active" data-action="All">All</button>
+                  <button onclick="setActionsView('Share')" class="px-3 py-1.5 text-xs font-medium rounded toggle-inactive" data-action="Share">Share</button>
+                  <button onclick="setActionsView('Copy')" class="px-3 py-1.5 text-xs font-medium rounded toggle-inactive" data-action="Copy">Copy</button>
+                  <button onclick="setActionsView('Connect')" class="px-3 py-1.5 text-xs font-medium rounded toggle-inactive" data-action="Connect">Connect</button>
+                </div>
+              </div>
+              <canvas id="chartActions" height="350"></canvas>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-1">Avg Followers per Social Visitor</h3>
+              <p class="text-xs text-gray-500 mb-4">Followers / Social Visitors — network depth</p>
+              <canvas id="chartFollowers" height="330"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const weekData = [
+  { week: 'Week 1', weekId: 'W1', activeUsers: 52400, socialOnboarded: 15200, socialActive: 7800, socialVisitors: 24500, newOnboardings: 2100, sharedPosts: 5200, copies: 16600, shareActions: 5200, copyActions: 16600, connectActions: 14430, followers: 38500 },
+  { week: 'Week 2', weekId: 'W2', activeUsers: 53100, socialOnboarded: 16100, socialActive: 8400, socialVisitors: 25800, newOnboardings: 2400, sharedPosts: 5800, copies: 19100, shareActions: 5800, copyActions: 19080, connectActions: 16130, followers: 42100 },
+  { week: 'Week 3', weekId: 'W3', activeUsers: 54800, socialOnboarded: 17300, socialActive: 9200, socialVisitors: 27100, newOnboardings: 2800, sharedPosts: 6400, copies: 21800, shareActions: 6440, copyActions: 21810, connectActions: 18220, followers: 46200 },
+  { week: 'Week 4', weekId: 'W4', activeUsers: 51200, socialOnboarded: 16800, socialActive: 8900, socialVisitors: 26200, newOnboardings: 2600, sharedPosts: 6100, copies: 20700, shareActions: 6140, copyActions: 20740, connectActions: 17360, followers: 48900 },
+  { week: 'Week 5', weekId: 'W5', activeUsers: 55600, socialOnboarded: 18200, socialActive: 9800, socialVisitors: 28400, newOnboardings: 3100, sharedPosts: 7200, copies: 25200, shareActions: 7150, copyActions: 25180, connectActions: 20090, followers: 53400 },
+  { week: 'Week 6', weekId: 'W6', activeUsers: 56300, socialOnboarded: 19100, socialActive: 10200, socialVisitors: 29100, newOnboardings: 3200, sharedPosts: 7600, copies: 27400, shareActions: 7650, copyActions: 27440, connectActions: 21420, followers: 57800 },
+  { week: 'Week 7', weekId: 'W7', activeUsers: 57100, socialOnboarded: 20500, socialActive: 11100, socialVisitors: 30200, newOnboardings: 3500, sharedPosts: 8100, copies: 29900, shareActions: 8110, copyActions: 29880, connectActions: 23870, followers: 62500 },
+  { week: 'Week 8', weekId: 'W8', activeUsers: 58200, socialOnboarded: 21300, socialActive: 11800, socialVisitors: 31500, newOnboardings: 3800, sharedPosts: 8500, copies: 32300, shareActions: 8500, copyActions: 32340, connectActions: 26200, followers: 67200 },
+];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let state = {
+  period: 'Week',
+  selectedWeeks: ['W1','W2','W3','W4','W5','W6','W7','W8'],
+  selectedMonths: ['M1','M2'],
+  activeTab: 'nsm',
+  nsmView: 'Conversion Rate',
+  bottomRightView: 'Coverage',
+  copyShareView: 'Ratio',
+  actionsView: 'All',
+};
+
+// Chart instances
+let charts = {};
+
+// ═══════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════
+function aggregateToMonth(weeks, monthName) {
+  const last = weeks[weeks.length - 1];
+  return {
+    week: monthName, activeUsers: last.activeUsers, socialOnboarded: last.socialOnboarded,
+    socialActive: last.socialActive, socialVisitors: last.socialVisitors,
+    newOnboardings: weeks.reduce((s, w) => s + w.newOnboardings, 0),
+    sharedPosts: weeks.reduce((s, w) => s + w.sharedPosts, 0),
+    copies: weeks.reduce((s, w) => s + w.copies, 0),
+    shareActions: weeks.reduce((s, w) => s + w.shareActions, 0),
+    copyActions: weeks.reduce((s, w) => s + w.copyActions, 0),
+    connectActions: weeks.reduce((s, w) => s + w.connectActions, 0),
+    followers: last.followers,
+  };
+}
+
+function getDisplayData() {
+  if (state.period === 'Week') {
+    return weekData.filter(w => state.selectedWeeks.includes(w.weekId));
+  }
+  const result = [];
+  if (state.selectedMonths.includes('M1')) result.push(aggregateToMonth(weekData.slice(0, 4), 'Month 1'));
+  if (state.selectedMonths.includes('M2')) result.push(aggregateToMonth(weekData.slice(4, 8), 'Month 2'));
+  return result;
+}
+
+function enrich(data) {
+  return data.map(w => ({
+    ...w,
+    conversionRate: +((w.socialActive / w.socialOnboarded) * 100).toFixed(1),
+    coverage: +((w.socialOnboarded / w.activeUsers) * 100).toFixed(1),
+    adoptionRate: +((w.socialVisitors / w.activeUsers) * 100).toFixed(1),
+    copyToShare: +(w.copies / w.sharedPosts).toFixed(2),
+    sharesPerUser: +(w.shareActions / w.socialActive).toFixed(2),
+    copiesPerUser: +(w.copyActions / w.socialActive).toFixed(2),
+    connectsPerUser: +(w.connectActions / w.socialActive).toFixed(2),
+    avgFollowers: +(w.followers / w.socialVisitors).toFixed(2),
+  }));
+}
+
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); charts[id] = null; }
+}
+
+function makeChart(canvasId, config) {
+  destroyChart(canvasId);
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  charts[canvasId] = new Chart(ctx, config);
+}
+
+// ═══════════════════════════════════════════════
+// FILTER SIDEBAR
+// ═══════════════════════════════════════════════
+function buildPeriodChecks() {
+  const container = document.getElementById('periodChecks');
+  container.innerHTML = '';
+  document.getElementById('periodLabel').textContent = state.period;
+  if (state.period === 'Week') {
+    ['W1','W2','W3','W4','W5','W6','W7','W8'].forEach(w => {
+      const label = document.createElement('label');
+      label.className = 'flex items-center gap-2 cursor-pointer';
+      label.innerHTML = `<input type="checkbox" ${state.selectedWeeks.includes(w)?'checked':''} class="w-4 h-4 border-gray-300 rounded" data-week="${w}"><span class="text-sm text-gray-700">${w}</span>`;
+      label.querySelector('input').addEventListener('change', function() {
+        if (this.checked) { if (!state.selectedWeeks.includes(w)) state.selectedWeeks.push(w); }
+        else { state.selectedWeeks = state.selectedWeeks.filter(x => x !== w); }
+        renderAll();
+      });
+      container.appendChild(label);
+    });
+  } else {
+    [['M1','Month 1 (W1-W4)'],['M2','Month 2 (W5-W8)']].forEach(([id, text]) => {
+      const label = document.createElement('label');
+      label.className = 'flex items-center gap-2 cursor-pointer';
+      label.innerHTML = `<input type="checkbox" ${state.selectedMonths.includes(id)?'checked':''} class="w-4 h-4 border-gray-300 rounded" data-month="${id}"><span class="text-sm text-gray-700">${text}</span>`;
+      label.querySelector('input').addEventListener('change', function() {
+        if (this.checked) { if (!state.selectedMonths.includes(id)) state.selectedMonths.push(id); }
+        else { state.selectedMonths = state.selectedMonths.filter(x => x !== id); }
+        renderAll();
+      });
+      container.appendChild(label);
+    });
+  }
+}
+
+function onPeriodChange() {
+  state.period = document.getElementById('periodSelect').value;
+  if (state.period === 'Week') state.selectedWeeks = ['W1','W2','W3','W4','W5','W6','W7','W8'];
+  else state.selectedMonths = ['M1','M2'];
+  document.getElementById('subtitle').textContent = `Social Feature Analytics — ${state.period} Level`;
+  buildPeriodChecks();
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════════
+function switchTab(tab) {
+  state.activeTab = tab;
+  document.getElementById('tabNsm').className = 'px-4 py-2 text-sm font-medium ' + (tab === 'nsm' ? 'tab-active' : 'tab-inactive');
+  document.getElementById('tabEngagement').className = 'px-4 py-2 text-sm font-medium ' + (tab === 'engagement' ? 'tab-active' : 'tab-inactive');
+  document.getElementById('pageNsm').style.display = tab === 'nsm' ? '' : 'none';
+  document.getElementById('pageEngagement').style.display = tab === 'engagement' ? '' : 'none';
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════
+// VIEW TOGGLES
+// ═══════════════════════════════════════════════
+function onNsmViewChange() {
+  state.nsmView = document.getElementById('nsmViewSelect').value;
+  document.getElementById('nsmTopTitle').textContent = state.nsmView === 'Conversion Rate' ? 'NSM — Conversion Rate %' : 'Social Active Users & Social Onboarded Visitors';
+  renderAll();
+}
+
+function setBottomRight(view) {
+  state.bottomRightView = view;
+  document.getElementById('btnCoverage').className = 'px-3 py-1.5 text-xs font-medium rounded ' + (view === 'Coverage' ? 'toggle-active' : 'toggle-inactive');
+  document.getElementById('btnAdoption').className = 'px-3 py-1.5 text-xs font-medium rounded ' + (view === 'Adoption Rate' ? 'toggle-active' : 'toggle-inactive');
+  document.getElementById('coverageTitle').textContent = view === 'Coverage' ? 'Coverage %' : 'Adoption Rate %';
+  document.getElementById('coverageSubtitle').textContent = view === 'Coverage' ? 'Social Onboarded / Active Users' : 'Social Visitors / Active Users';
+  renderAll();
+}
+
+function onCopyShareViewChange() {
+  state.copyShareView = document.getElementById('copyShareSelect').value;
+  document.getElementById('copyShareTitle').textContent = state.copyShareView === 'Ratio' ? 'Copy-to-Share Ratio' : 'Shared Posts & Copies';
+  document.getElementById('copyShareSubtitle').textContent = state.copyShareView === 'Ratio' ? 'Copies per Shared Post — how many users copy the proposed bet from a share' : 'Volume of shared posts and copies over time';
+  renderAll();
+}
+
+function setActionsView(view) {
+  state.actionsView = view;
+  document.querySelectorAll('#actionsButtons button').forEach(btn => {
+    btn.className = 'px-3 py-1.5 text-xs font-medium rounded ' + (btn.dataset.action === view ? 'toggle-active' : 'toggle-inactive');
+  });
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════
+// CHART RENDERING
+// ═══════════════════════════════════════════════
+const TEAL = '#29A8AC', YELLOW = '#F3CA3E', GREEN = '#2AC940';
+
+function dualAxisConfig(labels, barData, barLabel, line1Data, line1Label, line2Data, line2Label, barColor, line1Color, line2Color) {
+  return {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: barLabel, data: barData, backgroundColor: barColor || TEAL, borderRadius: 4, yAxisID: 'y', order: 2 },
+        { label: line1Label, data: line1Data, type: 'line', borderColor: line1Color || YELLOW, backgroundColor: line1Color || YELLOW, borderWidth: 3, pointRadius: 5, yAxisID: 'y1', order: 1 },
+        { label: line2Label, data: line2Data, type: 'line', borderColor: line2Color || GREEN, backgroundColor: line2Color || GREEN, borderWidth: 3, pointRadius: 5, yAxisID: 'y1', order: 0 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        y: { position: 'left', title: { display: true, text: barLabel } },
+        y1: { position: 'right', title: { display: true, text: 'Count' }, grid: { drawOnChartArea: false } },
+      }
+    }
+  };
+}
+
+function renderAll() {
+  const data = enrich(getDisplayData());
+  const labels = data.map(d => d.week);
+
+  if (state.activeTab === 'nsm') {
+    // Top chart
+    if (state.nsmView === 'Conversion Rate') {
+      makeChart('chartNsmTop', dualAxisConfig(
+        labels, data.map(d => d.conversionRate), 'Conversion Rate %',
+        data.map(d => d.socialOnboarded), 'Social Onboarded',
+        data.map(d => d.socialActive), 'Social Active Users'
+      ));
+    } else {
+      makeChart('chartNsmTop', {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Social Onboarded', data: data.map(d => d.socialOnboarded), borderColor: YELLOW, backgroundColor: YELLOW, borderWidth: 3, pointRadius: 5 },
+            { label: 'Social Active Users', data: data.map(d => d.socialActive), borderColor: GREEN, backgroundColor: GREEN, borderWidth: 3, pointRadius: 5 },
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { title: { display: true, text: 'Users' } } } }
+      });
+    }
+
+    // Onboardings
+    makeChart('chartOnboardings', {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'New Onboardings', data: data.map(d => d.newOnboardings), backgroundColor: TEAL, borderRadius: 4 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { title: { display: true, text: 'New Onboardings' } } } }
+    });
+
+    // Coverage / Adoption
+    if (state.bottomRightView === 'Coverage') {
+      makeChart('chartCoverage', dualAxisConfig(
+        labels, data.map(d => d.coverage), 'Coverage %',
+        data.map(d => d.activeUsers), 'Active Users',
+        data.map(d => d.socialOnboarded), 'Social Onboarded'
+      ));
+    } else {
+      makeChart('chartCoverage', dualAxisConfig(
+        labels, data.map(d => d.adoptionRate), 'Adoption Rate %',
+        data.map(d => d.activeUsers), 'Active Users',
+        data.map(d => d.socialVisitors), 'Social Visitors'
+      ));
+    }
+  }
+
+  if (state.activeTab === 'engagement') {
+    // Copy-to-Share
+    if (state.copyShareView === 'Ratio') {
+      makeChart('chartCopyShare', dualAxisConfig(
+        labels, data.map(d => d.copyToShare), 'Copy-to-Share Ratio',
+        data.map(d => d.sharedPosts), 'Shared Posts',
+        data.map(d => d.copies), 'Copies'
+      ));
+    } else {
+      makeChart('chartCopyShare', {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Shared Posts', data: data.map(d => d.sharedPosts), borderColor: YELLOW, backgroundColor: YELLOW, borderWidth: 3, pointRadius: 5 },
+            { label: 'Copies', data: data.map(d => d.copies), borderColor: GREEN, backgroundColor: GREEN, borderWidth: 3, pointRadius: 5 },
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { title: { display: true, text: 'Count' } } } }
+      });
+    }
+
+    // Actions per user
+    if (state.actionsView === 'All') {
+      makeChart('chartActions', {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Share', data: data.map(d => d.sharesPerUser), backgroundColor: TEAL },
+            { label: 'Copy', data: data.map(d => d.copiesPerUser), backgroundColor: YELLOW },
+            { label: 'Connect', data: data.map(d => d.connectsPerUser), backgroundColor: GREEN },
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Actions per User' } } }, plugins: { legend: { position: 'bottom' } } }
+      });
+    } else {
+      const colorMap = { Share: TEAL, Copy: YELLOW, Connect: GREEN };
+      const keyMap = { Share: 'sharesPerUser', Copy: 'copiesPerUser', Connect: 'connectsPerUser' };
+      makeChart('chartActions', {
+        type: 'bar',
+        data: { labels, datasets: [{ label: state.actionsView + ' per User', data: data.map(d => d[keyMap[state.actionsView]]), backgroundColor: colorMap[state.actionsView], borderRadius: 4 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { title: { display: true, text: state.actionsView + ' per User' } } } }
+      });
+    }
+
+    // Avg Followers
+    makeChart('chartFollowers', dualAxisConfig(
+      labels, data.map(d => d.avgFollowers), 'Avg Followers per Visitor',
+      data.map(d => d.followers), 'Total Followers',
+      data.map(d => d.socialVisitors), 'Social Visitors'
+    ));
+  }
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+buildPeriodChecks();
+renderAll();
+</script>
+</body>
+</html>

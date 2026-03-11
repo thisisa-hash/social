@@ -51,7 +51,7 @@
           <h1 class="text-2xl font-bold text-gray-900">NSM Social Dashboard</h1>
           <p class="text-sm text-gray-600 mt-1" id="subtitle">Social Feature Analytics — Week Level</p>
           <div class="flex gap-1 mt-4 border-b border-gray-200">
-            <button id="tabNsm" onclick="switchTab('nsm')" class="px-4 py-2 text-sm font-medium tab-active">NSM</button>
+            <button id="tabNsm" onclick="switchTab('nsm')" class="px-4 py-2 text-sm font-medium tab-active">Executive Overview</button>
             <button id="tabEngagement" onclick="switchTab('engagement')" class="px-4 py-2 text-sm font-medium tab-inactive">Engagement</button>
           </div>
         </div>
@@ -60,11 +60,7 @@
         <div id="pageNsm">
           <div class="bg-white rounded-lg shadow p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-lg font-semibold text-gray-800" id="nsmTopTitle">NSM — Conversion Rate %</h2>
-              <select id="nsmViewSelect" onchange="onNsmViewChange()" class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                <option value="Conversion Rate">Conversion Rate %</option>
-                <option value="Components">Active Users & Onboarded</option>
-              </select>
+              <h2 class="text-lg font-semibold text-gray-800" id="nsmTopTitle">NSM — Activity Rate</h2>
             </div>
             <canvas id="chartNsmTop" height="300"></canvas>
           </div>
@@ -81,7 +77,7 @@
                   <button id="btnAdoption" onclick="setBottomRight('Adoption Rate')" class="px-3 py-1.5 text-xs font-medium rounded toggle-inactive">Adoption Rate</button>
                 </div>
               </div>
-              <p class="text-xs text-gray-500 mb-3" id="coverageSubtitle">Social Onboarded / Active Users</p>
+              <p class="text-xs text-gray-500 mb-3" id="coverageSubtitle">Social Users / Active Users</p>
               <canvas id="chartCoverage" height="320"></canvas>
             </div>
           </div>
@@ -92,10 +88,6 @@
           <div class="bg-white rounded-lg shadow p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-lg font-semibold text-gray-800" id="copyShareTitle">Copy-to-Share Ratio</h2>
-              <select id="copyShareSelect" onchange="onCopyShareViewChange()" class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                <option value="Ratio">Copy-to-Share Ratio</option>
-                <option value="Components">Posts & Copies</option>
-              </select>
             </div>
             <p class="text-xs text-gray-500 mb-3" id="copyShareSubtitle">Copies per Shared Post — how many users copy the proposed bet from a share</p>
             <canvas id="chartCopyShare" height="300"></canvas>
@@ -268,8 +260,6 @@ function switchTab(tab) {
 // VIEW TOGGLES
 // ═══════════════════════════════════════════════
 function onNsmViewChange() {
-  state.nsmView = document.getElementById('nsmViewSelect').value;
-  document.getElementById('nsmTopTitle').textContent = state.nsmView === 'Conversion Rate' ? 'NSM — Conversion Rate %' : 'Social Active Users & Social Onboarded Visitors';
   renderAll();
 }
 
@@ -278,7 +268,7 @@ function setBottomRight(view) {
   document.getElementById('btnCoverage').className = 'px-3 py-1.5 text-xs font-medium rounded ' + (view === 'Coverage' ? 'toggle-active' : 'toggle-inactive');
   document.getElementById('btnAdoption').className = 'px-3 py-1.5 text-xs font-medium rounded ' + (view === 'Adoption Rate' ? 'toggle-active' : 'toggle-inactive');
   document.getElementById('coverageTitle').textContent = view === 'Coverage' ? 'Coverage %' : 'Adoption Rate %';
-  document.getElementById('coverageSubtitle').textContent = view === 'Coverage' ? 'Social Onboarded / Active Users' : 'Social Visitors / Active Users';
+  document.getElementById('coverageSubtitle').textContent = view === 'Coverage' ? 'Social Users / Active Users' : '(Onboarded) Social Visitors / Active Users';
   renderAll();
 }
 
@@ -329,32 +319,18 @@ function renderAll() {
   const labels = data.map(d => d.week);
 
   if (state.activeTab === 'nsm') {
-    // Top chart
-    if (state.nsmView === 'Conversion Rate') {
-      makeChart('chartNsmTop', dualAxisConfig(
-        labels, data.map(d => d.conversionRate), 'Conversion Rate %',
-        data.map(d => d.socialOnboarded), 'Social Onboarded',
-        data.map(d => d.socialActive), 'Social Active Users'
-      ));
-    } else {
-      makeChart('chartNsmTop', {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            { label: 'Social Onboarded', data: data.map(d => d.socialOnboarded), borderColor: YELLOW, backgroundColor: YELLOW, borderWidth: 3, pointRadius: 5 },
-            { label: 'Social Active Users', data: data.map(d => d.socialActive), borderColor: GREEN, backgroundColor: GREEN, borderWidth: 3, pointRadius: 5 },
-          ]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { title: { display: true, text: 'Users' } } } }
-      });
-    }
+    // Top chart - Activity Rate
+    makeChart('chartNsmTop', dualAxisConfig(
+      labels, data.map(d => d.conversionRate), 'Activity Rate %',
+      data.map(d => d.socialOnboarded), '(Onboarded) Social Visitors',
+      data.map(d => d.socialActive), 'Active Social Users'
+    ));
 
     // Onboardings
     makeChart('chartOnboardings', {
       type: 'bar',
-      data: { labels, datasets: [{ label: 'New Onboardings', data: data.map(d => d.newOnboardings), backgroundColor: TEAL, borderRadius: 4 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { title: { display: true, text: 'New Onboardings' } } } }
+      data: { labels, datasets: [{ label: 'Onboardings', data: data.map(d => d.newOnboardings), backgroundColor: TEAL, borderRadius: 4 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { title: { display: true, text: 'Onboardings' } } } }
     });
 
     // Coverage / Adoption
@@ -362,38 +338,24 @@ function renderAll() {
       makeChart('chartCoverage', dualAxisConfig(
         labels, data.map(d => d.coverage), 'Coverage %',
         data.map(d => d.activeUsers), 'Active Users',
-        data.map(d => d.socialOnboarded), 'Social Onboarded'
+        data.map(d => d.socialOnboarded), 'Social Users'
       ));
     } else {
       makeChart('chartCoverage', dualAxisConfig(
         labels, data.map(d => d.adoptionRate), 'Adoption Rate %',
         data.map(d => d.activeUsers), 'Active Users',
-        data.map(d => d.socialVisitors), 'Social Visitors'
+        data.map(d => d.socialVisitors), '(Onboarded) Social Visitors'
       ));
     }
   }
 
   if (state.activeTab === 'engagement') {
-    // Copy-to-Share
-    if (state.copyShareView === 'Ratio') {
-      makeChart('chartCopyShare', dualAxisConfig(
-        labels, data.map(d => d.copyToShare), 'Copy-to-Share Ratio',
-        data.map(d => d.sharedPosts), 'Shared Posts',
-        data.map(d => d.copies), 'Copies'
-      ));
-    } else {
-      makeChart('chartCopyShare', {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            { label: 'Shared Posts', data: data.map(d => d.sharedPosts), borderColor: YELLOW, backgroundColor: YELLOW, borderWidth: 3, pointRadius: 5 },
-            { label: 'Copies', data: data.map(d => d.copies), borderColor: GREEN, backgroundColor: GREEN, borderWidth: 3, pointRadius: 5 },
-          ]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { title: { display: true, text: 'Count' } } } }
-      });
-    }
+    // Copy-to-Share Ratio
+    makeChart('chartCopyShare', dualAxisConfig(
+      labels, data.map(d => d.copyToShare), 'Copy-to-Share Ratio',
+      data.map(d => d.sharedPosts), 'Shared Posts',
+      data.map(d => d.copies), 'Copies'
+    ));
 
     // Actions per user
     if (state.actionsView === 'All') {

@@ -10,11 +10,9 @@ const SocialDashboard = () => {
   const [activeTab, setActiveTab] = useState('nsm');
 
   // Page 1 toggles
-  const [nsmView, setNsmView] = useState('Conversion Rate');
   const [bottomRightView, setBottomRightView] = useState('Coverage');
 
   // Page 2 toggles
-  const [copyShareView, setCopyShareView] = useState('Ratio');
   const [actionsView, setActionsView] = useState('All');
 
   const xAxisLine = { dataKey: "week", tick: { fontSize: 12 }, padding: { left: 30, right: 30 } };
@@ -173,7 +171,7 @@ const SocialDashboard = () => {
             <p className="text-sm text-gray-600 mt-1">Social Feature Analytics — {selectedPeriod} Level</p>
             <div className="flex gap-1 mt-4 border-b border-gray-200">
               {[
-                { id: 'nsm', label: 'NSM' },
+                { id: 'nsm', label: 'Executive Overview' },
                 { id: 'engagement', label: 'Engagement' },
               ].map(tab => (
                 <button
@@ -196,56 +194,32 @@ const SocialDashboard = () => {
           {/* ═══════════════════════════════════════════ */}
           {activeTab === 'nsm' && (
             <>
-              {/* ── TOP: NSM — Conversion Rate ── */}
+              {/* ── TOP: NSM — Activity Rate ── */}
               <div className="bg-white rounded-lg shadow p-6 mb-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    {nsmView === 'Conversion Rate'
-                      ? 'NSM — Conversion Rate %'
-                      : 'Social Active Users & Social Onboarded Visitors'}
-                  </h2>
-                  <select
-                    value={nsmView}
-                    onChange={(e) => setNsmView(e.target.value)}
-                    className="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  >
-                    <option value="Conversion Rate">Conversion Rate %</option>
-                    <option value="Components">Active Users & Onboarded</option>
-                  </select>
+                  <h2 className="text-lg font-semibold text-gray-800">NSM — Activity Rate</h2>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
-                  {nsmView === 'Conversion Rate' ? (
-                    <ComposedChart data={enrichedData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis {...xAxisBar} />
-                      <YAxis
-                        yAxisId="left"
-                        tick={{ fontSize: 12 }}
-                        label={{ value: 'Conversion Rate %', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
-                      />
-                      <YAxis
-                        yAxisId="right"
-                        orientation="right"
-                        tick={{ fontSize: 12 }}
-                        label={{ value: 'Users', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
-                      />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                      <Bar yAxisId="left" dataKey="conversionRate" fill="#29A8AC" name="Conversion Rate %" radius={[4, 4, 0, 0]} />
-                      <Line yAxisId="right" type="monotone" dataKey="socialOnboarded" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Social Onboarded" />
-                      <Line yAxisId="right" type="monotone" dataKey="socialActive" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Social Active Users" />
-                    </ComposedChart>
-                  ) : (
-                    <ComposedChart data={enrichedData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis {...xAxisLine} />
-                      <YAxis tick={{ fontSize: 12 }} label={{ value: 'Users', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }} />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                      <Line type="monotone" dataKey="socialOnboarded" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Social Onboarded" />
-                      <Line type="monotone" dataKey="socialActive" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Social Active Users" />
-                    </ComposedChart>
-                  )}
+                  <ComposedChart data={enrichedData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis {...xAxisBar} />
+                    <YAxis
+                      yAxisId="left"
+                      tick={{ fontSize: 12 }}
+                      label={{ value: 'Activity Rate %', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+                    />
+                    <YAxis
+                      yAxisId="right"
+                      orientation="right"
+                      tick={{ fontSize: 12 }}
+                      label={{ value: 'Users', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    <Bar yAxisId="left" dataKey="conversionRate" fill="#29A8AC" name="Activity Rate %" radius={[4, 4, 0, 0]} />
+                    <Line yAxisId="right" type="monotone" dataKey="socialOnboarded" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="(Onboarded) Social Visitors" />
+                    <Line yAxisId="right" type="monotone" dataKey="socialActive" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Active Social Users" />
+                  </ComposedChart>
                 </ResponsiveContainer>
               </div>
 
@@ -260,11 +234,11 @@ const SocialDashboard = () => {
                       <XAxis {...xAxisBar} />
                       <YAxis
                         tick={{ fontSize: 12 }}
-                        label={{ value: 'New Onboardings', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+                        label={{ value: 'Onboardings', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
                       />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
-                      <Bar dataKey="newOnboardings" fill="#29A8AC" name="New Onboardings" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="newOnboardings" fill="#29A8AC" name="Onboardings" radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -293,8 +267,8 @@ const SocialDashboard = () => {
                   </div>
                   <p className="text-xs text-gray-500 mb-3">
                     {bottomRightView === 'Coverage'
-                      ? 'Social Onboarded / Active Users'
-                      : 'Social Visitors / Active Users'}
+                      ? 'Social Users / Active Users'
+                      : '(Onboarded) Social Visitors / Active Users'}
                   </p>
                   <ResponsiveContainer width="100%" height={320}>
                     <ComposedChart data={enrichedData}>
@@ -336,7 +310,7 @@ const SocialDashboard = () => {
                         stroke="#2AC940"
                         strokeWidth={3}
                         dot={{ fill: '#2AC940', r: 5 }}
-                        name={bottomRightView === 'Coverage' ? 'Social Onboarded' : 'Social Visitors'}
+                        name={bottomRightView === 'Coverage' ? 'Social Users' : '(Onboarded) Social Visitors'}
                       />
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -353,58 +327,32 @@ const SocialDashboard = () => {
               {/* ── TOP: Copy-to-Share Ratio ── */}
               <div className="bg-white rounded-lg shadow p-6 mb-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    {copyShareView === 'Ratio'
-                      ? 'Copy-to-Share Ratio'
-                      : 'Shared Posts & Copies'}
-                  </h2>
-                  <select
-                    value={copyShareView}
-                    onChange={(e) => setCopyShareView(e.target.value)}
-                    className="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  >
-                    <option value="Ratio">Copy-to-Share Ratio</option>
-                    <option value="Components">Posts & Copies</option>
-                  </select>
+                  <h2 className="text-lg font-semibold text-gray-800">Copy-to-Share Ratio</h2>
                 </div>
                 <p className="text-xs text-gray-500 mb-3">
-                  {copyShareView === 'Ratio'
-                    ? 'Copies per Shared Post — how many users copy the proposed bet from a share'
-                    : 'Volume of shared posts and copies over time'}
+                  Copies per Shared Post — how many users copy the proposed bet from a share
                 </p>
                 <ResponsiveContainer width="100%" height={300}>
-                  {copyShareView === 'Ratio' ? (
-                    <ComposedChart data={enrichedData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis {...xAxisBar} />
-                      <YAxis
-                        yAxisId="left"
-                        tick={{ fontSize: 12 }}
-                        label={{ value: 'Copies per Share', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
-                      />
-                      <YAxis
-                        yAxisId="right"
-                        orientation="right"
-                        tick={{ fontSize: 12 }}
-                        label={{ value: 'Count', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
-                      />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                      <Bar yAxisId="left" dataKey="copyToShare" fill="#29A8AC" name="Copy-to-Share Ratio" radius={[4, 4, 0, 0]} />
-                      <Line yAxisId="right" type="monotone" dataKey="sharedPosts" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Shared Posts" />
-                      <Line yAxisId="right" type="monotone" dataKey="copies" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Copies" />
-                    </ComposedChart>
-                  ) : (
-                    <ComposedChart data={enrichedData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis {...xAxisLine} />
-                      <YAxis tick={{ fontSize: 12 }} label={{ value: 'Count', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }} />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                      <Line type="monotone" dataKey="sharedPosts" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Shared Posts" />
-                      <Line type="monotone" dataKey="copies" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Copies" />
-                    </ComposedChart>
-                  )}
+                  <ComposedChart data={enrichedData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis {...xAxisBar} />
+                    <YAxis
+                      yAxisId="left"
+                      tick={{ fontSize: 12 }}
+                      label={{ value: 'Copies per Share', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+                    />
+                    <YAxis
+                      yAxisId="right"
+                      orientation="right"
+                      tick={{ fontSize: 12 }}
+                      label={{ value: 'Count', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    <Bar yAxisId="left" dataKey="copyToShare" fill="#29A8AC" name="Copy-to-Share Ratio" radius={[4, 4, 0, 0]} />
+                    <Line yAxisId="right" type="monotone" dataKey="sharedPosts" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Shared Posts" />
+                    <Line yAxisId="right" type="monotone" dataKey="copies" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Copies" />
+                  </ComposedChart>
                 </ResponsiveContainer>
               </div>
 

@@ -311,7 +311,7 @@ const SocialDashboard = () => {
                         stroke="#2AC940"
                         strokeWidth={3}
                         dot={{ fill: '#2AC940', r: 5 }}
-                        name={bottomRightView === 'Coverage' ? 'Social Users' : '(Onboarded) Social Visitors'}
+                        name={bottomRightView === 'Coverage' ? 'Active Users with Social' : '(Onboarded) Social Visitors'}
                       />
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -330,9 +330,6 @@ const SocialDashboard = () => {
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-semibold text-gray-800">Copy-to-Share Ratio</h2>
                 </div>
-                <p className="text-xs text-gray-500 mb-3">
-                  Copies per Shared Post — how many users copy the proposed bet from a share
-                </p>
                 <ResponsiveContainer width="100%" height={300}>
                   <ComposedChart data={enrichedData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -366,19 +363,12 @@ const SocialDashboard = () => {
                       <h3 className="text-lg font-semibold text-gray-800">
                         {engagementDenom === 'Social Active User' ? 'Actions per Social Active User' : 'Actions per Social Visitor'}
                       </h3>
-                      {['Social Visitor', 'Social Active User'].map(v => (
-                        <button
-                          key={v}
-                          onClick={() => setEngagementDenom(v)}
-                          className={`px-3 py-1.5 text-xs font-medium rounded transition-colors ${
-                            engagementDenom === v
-                              ? 'bg-teal-500 text-white'
-                              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                          }`}
-                        >
-                          {v}
-                        </button>
-                      ))}
+                      <button
+                        onClick={() => setEngagementDenom(engagementDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User')}
+                        className="px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      >
+                        {engagementDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User'}
+                      </button>
                     </div>
                     <div className="flex gap-2">
                       {['All', 'Share', 'Copy', 'Connect'].map(v => (
@@ -439,19 +429,12 @@ const SocialDashboard = () => {
                     <h3 className="text-lg font-semibold text-gray-800">
                       {engagementDenom === 'Social Active User' ? 'Followers per Social Active User' : 'Followers per Social Visitor'}
                     </h3>
-                    {['Social Active User', 'Social Visitor'].map(v => (
-                      <button
-                        key={v}
-                        onClick={() => setEngagementDenom(v)}
-                        className={`px-3 py-1.5 text-xs font-medium rounded transition-colors ${
-                          engagementDenom === v
-                            ? 'bg-teal-500 text-white'
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                        }`}
-                      >
-                        {v}
-                      </button>
-                    ))}
+                    <button
+                      onClick={() => setEngagementDenom(engagementDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User')}
+                      className="px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    >
+                      {engagementDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User'}
+                    </button>
                   </div>
                   <ResponsiveContainer width="100%" height={330}>
                     <ComposedChart data={enrichedData}>

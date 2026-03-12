@@ -381,7 +381,7 @@ const SocialDashboard = () => {
                   </div>
                   <ResponsiveContainer width="100%" height={350}>
                     {actionsView === 'All' ? (
-                      <BarChart data={enrichedData} barCategoryGap="25%" barGap={4}>
+                      <BarChart key={actionsDenom} data={enrichedData} barCategoryGap="25%" barGap={4}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                         <XAxis {...xAxisBar} />
                         <YAxis tick={{ fontSize: 12 }} />
@@ -393,6 +393,7 @@ const SocialDashboard = () => {
                       </BarChart>
                     ) : (
                       <BarChart
+                        key={actionsDenom}
                         data={enrichedData.map(w => ({
                           week: w.week,
                           value: actionsDenom === 'Social Active User'
@@ -432,24 +433,14 @@ const SocialDashboard = () => {
                     </button>
                   </div>
                   <ResponsiveContainer width="100%" height={350}>
-                    <ComposedChart data={enrichedData} barCategoryGap="25%">
+                    <BarChart key={followersDenom} data={enrichedData} barCategoryGap="25%">
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                       <XAxis {...xAxisBar} />
-                      <YAxis
-                        yAxisId="left"
-                        tick={{ fontSize: 12 }}
-                      />
-                      <YAxis
-                        yAxisId="right"
-                        orientation="right"
-                        tick={{ fontSize: 12 }}
-                      />
+                      <YAxis tick={{ fontSize: 12 }} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
-                      <Bar yAxisId="left" dataKey={followersDenom === 'Social Active User' ? 'avgFollowersPerActive' : 'avgFollowers'} fill="#29A8AC" name={followersDenom === 'Social Active User' ? 'Followers per Active User' : 'Followers per Visitor'} radius={[4, 4, 0, 0]} barSize={32} />
-                      <Line yAxisId="right" type="monotone" dataKey="followers" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Total Followers" />
-                      <Line yAxisId="right" type="monotone" dataKey={followersDenom === 'Social Active User' ? 'socialActive' : 'socialVisitors'} stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name={followersDenom === 'Social Active User' ? 'Social Active Users' : 'Social Visitors'} />
-                    </ComposedChart>
+                      <Bar dataKey={followersDenom === 'Social Active User' ? 'avgFollowersPerActive' : 'avgFollowers'} fill="#29A8AC" name={followersDenom === 'Social Active User' ? 'Followers per Active User' : 'Followers per Visitor'} radius={[4, 4, 0, 0]} barSize={32} />
+                    </BarChart>
                   </ResponsiveContainer>
                 </div>
               </div>

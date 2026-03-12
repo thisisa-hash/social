@@ -382,19 +382,23 @@ const SocialDashboard = () => {
                   </div>
                   <ResponsiveContainer width="100%" height={350}>
                     {actionsView === 'All' ? (
-                      <BarChart key={actionsDenom} data={enrichedData} barCategoryGap="25%" barGap={4}>
+                      <BarChart data={enrichedData.map(w => ({
+                        week: w.week,
+                        shares: actionsDenom === 'Social Active User' ? w.sharesPerUser : w.sharesPerVisitor,
+                        copies: actionsDenom === 'Social Active User' ? w.copiesPerUser : w.copiesPerVisitor,
+                        connects: actionsDenom === 'Social Active User' ? w.connectsPerUser : w.connectsPerVisitor,
+                      }))} barCategoryGap="25%" barGap={4}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                         <XAxis {...xAxisBar} />
                         <YAxis tick={{ fontSize: 12 }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend />
-                        <Bar dataKey={actionsDenom === 'Social Active User' ? 'sharesPerUser' : 'sharesPerVisitor'} stackId="a" fill="#29A8AC" name="Share" radius={[0, 0, 0, 0]} barSize={32} />
-                        <Bar dataKey={actionsDenom === 'Social Active User' ? 'copiesPerUser' : 'copiesPerVisitor'} stackId="a" fill="#F3CA3E" name="Copy" />
-                        <Bar dataKey={actionsDenom === 'Social Active User' ? 'connectsPerUser' : 'connectsPerVisitor'} stackId="a" fill="#2AC940" name="Connect" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="shares" stackId="a" fill="#29A8AC" name="Share" radius={[0, 0, 0, 0]} barSize={32} />
+                        <Bar dataKey="copies" stackId="a" fill="#F3CA3E" name="Copy" />
+                        <Bar dataKey="connects" stackId="a" fill="#2AC940" name="Connect" radius={[4, 4, 0, 0]} />
                       </BarChart>
                     ) : (
                       <BarChart
-                        key={actionsDenom}
                         data={enrichedData.map(w => ({
                           week: w.week,
                           value: actionsDenom === 'Social Active User'
@@ -434,13 +438,16 @@ const SocialDashboard = () => {
                     </button>
                   </div>
                   <ResponsiveContainer width="100%" height={350}>
-                    <BarChart key={followersDenom} data={enrichedData} barCategoryGap="25%">
+                    <BarChart data={enrichedData.map(w => ({
+                      week: w.week,
+                      followers: followersDenom === 'Social Active User' ? w.avgFollowersPerActive : w.avgFollowers,
+                    }))} barCategoryGap="25%">
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                       <XAxis {...xAxisBar} />
                       <YAxis tick={{ fontSize: 12 }} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
-                      <Bar dataKey={followersDenom === 'Social Active User' ? 'avgFollowersPerActive' : 'avgFollowers'} fill="#29A8AC" name={followersDenom === 'Social Active User' ? 'Followers per Active User' : 'Followers per Visitor'} radius={[4, 4, 0, 0]} barSize={32} />
+                      <Bar dataKey="followers" fill="#29A8AC" name={followersDenom === 'Social Active User' ? 'Followers per Active User' : 'Followers per Visitor'} radius={[4, 4, 0, 0]} barSize={32} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

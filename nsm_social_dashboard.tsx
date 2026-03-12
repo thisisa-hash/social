@@ -353,7 +353,7 @@ const SocialDashboard = () => {
                 {/* ── Bottom Left: Actions per Social Active User / Visitor ── */}
                 <div className="bg-white rounded-lg shadow p-6">
                   <div className="flex justify-between items-center mb-4">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-6">
                       <h3 className="text-lg font-semibold text-gray-800">
                         {actionsDenom === 'Social Active User' ? 'Actions per Social Active User' : 'Actions per Social Visitor'}
                       </h3>
@@ -426,7 +426,7 @@ const SocialDashboard = () => {
 
                 {/* ── Bottom Right: Followers per Social Visitor / Active User ── */}
                 <div className="bg-white rounded-lg shadow p-6">
-                  <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center gap-6 mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">
                       {followersDenom === 'Social Active User' ? 'Followers per Social Active User' : 'Followers per Social Visitor'}
                     </h3>

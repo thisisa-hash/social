@@ -205,53 +205,29 @@ const SocialDashboard = () => {
               {/* ── TOP: NSM — Conversion Rate ── */}
               <div className="bg-white rounded-lg shadow p-6 mb-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    {nsmView === 'Conversion Rate'
-                      ? 'NSM — Conversion Rate %'
-                      : 'Social Active Users & Social Onboarded Visitors'}
-                  </h2>
-                  <select
-                    value={nsmView}
-                    onChange={(e) => setNsmView(e.target.value)}
-                    className="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  >
-                    <option value="Conversion Rate">Conversion Rate %</option>
-                    <option value="Components">Active Users & Onboarded</option>
-                  </select>
+                  <h2 className="text-lg font-semibold text-gray-800">NSM — Activity Rate %</h2>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
-                  {nsmView === 'Conversion Rate' ? (
-                    <ComposedChart data={enrichedData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis {...xAxisBar} />
-                      <YAxis
-                        yAxisId="left"
-                        tick={{ fontSize: 12 }}
-                        label={{ value: 'Conversion Rate %', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
-                      />
-                      <YAxis
-                        yAxisId="right"
-                        orientation="right"
-                        tick={{ fontSize: 12 }}
-                        label={{ value: 'Users', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
-                      />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                      <Bar yAxisId="left" dataKey="conversionRate" fill="#29A8AC" name="Conversion Rate %" radius={[4, 4, 0, 0]} />
-                      <Line yAxisId="right" type="monotone" dataKey="socialOnboarded" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Social Onboarded" />
-                      <Line yAxisId="right" type="monotone" dataKey="socialActive" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Social Active Users" />
-                    </ComposedChart>
-                  ) : (
-                    <ComposedChart data={enrichedData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis {...xAxisLine} />
-                      <YAxis tick={{ fontSize: 12 }} label={{ value: 'Users', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }} />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend />
-                      <Line type="monotone" dataKey="socialOnboarded" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Social Onboarded" />
-                      <Line type="monotone" dataKey="socialActive" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Social Active Users" />
-                    </ComposedChart>
-                  )}
+                  <ComposedChart data={enrichedData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis {...xAxisBar} />
+                    <YAxis
+                      yAxisId="left"
+                      tick={{ fontSize: 12 }}
+                      label={{ value: 'Activity Rate %', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+                    />
+                    <YAxis
+                      yAxisId="right"
+                      orientation="right"
+                      tick={{ fontSize: 12 }}
+                      label={{ value: 'Users', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    <Bar yAxisId="left" dataKey="conversionRate" fill="#29A8AC" name="Activity Rate %" radius={[4, 4, 0, 0]} />
+                    <Line yAxisId="right" type="monotone" dataKey="socialOnboarded" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Social Onboarded Visitors" />
+                    <Line yAxisId="right" type="monotone" dataKey="socialActive" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Social Active Users" />
+                  </ComposedChart>
                 </ResponsiveContainer>
               </div>
 
@@ -266,11 +242,11 @@ const SocialDashboard = () => {
                       <XAxis {...xAxisBar} />
                       <YAxis
                         tick={{ fontSize: 12 }}
-                        label={{ value: 'New Onboardings', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+                        label={{ value: 'Onboardings', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
                       />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
-                      <Bar dataKey="newOnboardings" fill="#29A8AC" name="New Onboardings" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="newOnboardings" fill="#29A8AC" name="Onboardings" radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

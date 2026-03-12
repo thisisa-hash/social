@@ -223,7 +223,7 @@ const SocialDashboard = () => {
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     <Bar yAxisId="left" dataKey="conversionRate" fill="#29A8AC" name="Activity Rate %" radius={[4, 4, 0, 0]} />
-                    <Line yAxisId="right" type="monotone" dataKey="socialOnboarded" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="(Onboarded) Social Visitors" />
+                    <Line yAxisId="right" type="monotone" dataKey="socialOnboarded" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Social Onboarded Visitors" />
                     <Line yAxisId="right" type="monotone" dataKey="socialActive" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Active Social Users" />
                   </ComposedChart>
                 </ResponsiveContainer>
@@ -311,7 +311,7 @@ const SocialDashboard = () => {
                         stroke="#2AC940"
                         strokeWidth={3}
                         dot={{ fill: '#2AC940', r: 5 }}
-                        name={bottomRightView === 'Coverage' ? 'Active Users with Social' : '(Onboarded) Social Visitors'}
+                        name={bottomRightView === 'Coverage' ? 'Active Users with Social' : 'Social Visitors'}
                       />
                     </ComposedChart>
                   </ResponsiveContainer>

@@ -219,7 +219,7 @@ const SocialDashboard = () => {
                       tick={{ fontSize: 12 }}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend payload={[
+                    <Legend itemSorter={() => 0} payload={[
                       { value: 'Social Active Users', type: 'line', color: '#2AC940' },
                       { value: 'Social Onboarded Visitors', type: 'line', color: '#F3CA3E' },
                       { value: 'Activity Rate %', type: 'rect', color: '#29A8AC' },
@@ -286,7 +286,7 @@ const SocialDashboard = () => {
                         tick={{ fontSize: 12 }}
                       />
                       <Tooltip content={<CustomTooltip />} />
-                      <Legend payload={[
+                      <Legend itemSorter={() => 0} payload={[
                         { value: bottomRightView === 'Coverage' ? 'Active Users with Social' : 'Social Onboarded Visitors', type: 'line', color: '#2AC940' },
                         { value: 'Active Users', type: 'line', color: '#F3CA3E' },
                         { value: bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %', type: 'rect', color: '#29A8AC' },
@@ -347,7 +347,7 @@ const SocialDashboard = () => {
                       tick={{ fontSize: 12 }}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend payload={[
+                    <Legend itemSorter={() => 0} payload={[
                       { value: 'Copies', type: 'line', color: '#2AC940' },
                       { value: 'Shared Posts', type: 'line', color: '#F3CA3E' },
                       { value: 'Copy-to-Share Ratio', type: 'rect', color: '#29A8AC' },

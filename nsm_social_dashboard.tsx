@@ -212,13 +212,11 @@ const SocialDashboard = () => {
                     <YAxis
                       yAxisId="left"
                       tick={{ fontSize: 12 }}
-                      label={{ value: 'Activity Rate %', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
                     />
                     <YAxis
                       yAxisId="right"
                       orientation="right"
                       tick={{ fontSize: 12 }}
-                      label={{ value: 'Users', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
@@ -240,7 +238,6 @@ const SocialDashboard = () => {
                       <XAxis {...xAxisBar} />
                       <YAxis
                         tick={{ fontSize: 12 }}
-                        label={{ value: 'Onboardings', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
                       />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
@@ -278,13 +275,11 @@ const SocialDashboard = () => {
                       <YAxis
                         yAxisId="left"
                         tick={{ fontSize: 12 }}
-                        label={{ value: bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
                       />
                       <YAxis
                         yAxisId="right"
                         orientation="right"
                         tick={{ fontSize: 12 }}
-                        label={{ value: 'Users', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
                       />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
@@ -311,7 +306,7 @@ const SocialDashboard = () => {
                         stroke="#2AC940"
                         strokeWidth={3}
                         dot={{ fill: '#2AC940', r: 5 }}
-                        name={bottomRightView === 'Coverage' ? 'Active Users with Social' : 'Social Visitors'}
+                        name={bottomRightView === 'Coverage' ? 'Active Users with Social' : 'Social Onboarded Visitors'}
                       />
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -337,13 +332,11 @@ const SocialDashboard = () => {
                     <YAxis
                       yAxisId="left"
                       tick={{ fontSize: 12 }}
-                      label={{ value: 'Copies per Share', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
                     />
                     <YAxis
                       yAxisId="right"
                       orientation="right"
                       tick={{ fontSize: 12 }}
-                      label={{ value: 'Count', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
@@ -391,7 +384,7 @@ const SocialDashboard = () => {
                       <BarChart data={enrichedData}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                         <XAxis {...xAxisBar} />
-                        <YAxis tick={{ fontSize: 12 }} label={{ value: 'Actions per User', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }} />
+                        <YAxis tick={{ fontSize: 12 }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend />
                         <Bar dataKey={engagementDenom === 'Social Active User' ? 'sharesPerUser' : 'sharesPerVisitor'} stackId="a" fill="#29A8AC" name="Share" />
@@ -409,7 +402,7 @@ const SocialDashboard = () => {
                       >
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                         <XAxis {...xAxisBar} />
-                        <YAxis tick={{ fontSize: 12 }} label={{ value: `${actionsView} per User`, angle: -90, position: 'insideLeft', style: { fontSize: 12 } }} />
+                        <YAxis tick={{ fontSize: 12 }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend />
                         <Bar
@@ -443,13 +436,11 @@ const SocialDashboard = () => {
                       <YAxis
                         yAxisId="left"
                         tick={{ fontSize: 12 }}
-                        label={{ value: 'Followers per Visitor', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
                       />
                       <YAxis
                         yAxisId="right"
                         orientation="right"
                         tick={{ fontSize: 12 }}
-                        label={{ value: 'Count', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
                       />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />

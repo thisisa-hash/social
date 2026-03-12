@@ -205,7 +205,7 @@ const SocialDashboard = () => {
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-semibold text-gray-800">NSM — Activity Rate %</h2>
                 </div>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={350}>
                   <ComposedChart data={enrichedData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis {...xAxisBar} />
@@ -268,7 +268,7 @@ const SocialDashboard = () => {
                       ))}
                     </div>
                   </div>
-                  <ResponsiveContainer width="100%" height={320}>
+                  <ResponsiveContainer width="100%" height={350}>
                     <ComposedChart data={enrichedData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                       <XAxis {...xAxisBar} />
@@ -325,7 +325,7 @@ const SocialDashboard = () => {
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-semibold text-gray-800">Copy-to-Share Ratio</h2>
                 </div>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={350}>
                   <ComposedChart data={enrichedData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis {...xAxisBar} />
@@ -431,7 +431,7 @@ const SocialDashboard = () => {
                       {followersDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User'}
                     </button>
                   </div>
-                  <ResponsiveContainer width="100%" height={330}>
+                  <ResponsiveContainer width="100%" height={350}>
                     <ComposedChart data={enrichedData} barCategoryGap="25%">
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                       <XAxis {...xAxisBar} />

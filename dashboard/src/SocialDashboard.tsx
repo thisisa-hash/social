@@ -340,9 +340,9 @@ const SocialDashboard = () => {
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
-                    <Bar yAxisId="left" dataKey="copyToShare" fill="#29A8AC" name="Copy-to-Share Ratio" radius={[4, 4, 0, 0]} />
-                    <Line yAxisId="right" type="monotone" dataKey="sharedPosts" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Shared Posts" />
                     <Line yAxisId="right" type="monotone" dataKey="copies" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Copies" />
+                    <Line yAxisId="right" type="monotone" dataKey="sharedPosts" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Shared Posts" />
+                    <Bar yAxisId="left" dataKey="copyToShare" fill="#29A8AC" name="Copy-to-Share Ratio" radius={[4, 4, 0, 0]} />
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>

@@ -359,7 +359,7 @@ const SocialDashboard = () => {
                       </h3>
                       <button
                         onClick={() => setActionsDenom(actionsDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User')}
-                        className="px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        className="ml-4 px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
                       >
                         {actionsDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User'}
                       </button>
@@ -432,7 +432,7 @@ const SocialDashboard = () => {
                     </h3>
                     <button
                       onClick={() => setFollowersDenom(followersDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User')}
-                      className="px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      className="ml-4 px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
                     >
                       {followersDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User'}
                     </button>

@@ -359,7 +359,7 @@ const SocialDashboard = () => {
                       </h3>
                       <button
                         onClick={() => setActionsDenom(actionsDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User')}
-                        className="px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        className="ml-4 px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
                       >
                         {actionsDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User'}
                       </button>
@@ -393,9 +393,9 @@ const SocialDashboard = () => {
                         <YAxis tick={{ fontSize: 12 }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend />
-                        <Bar dataKey="shares" stackId="a" fill="#29A8AC" name="Share" radius={[0, 0, 0, 0]} barSize={32} />
-                        <Bar dataKey="copies" stackId="a" fill="#F3CA3E" name="Copy" />
-                        <Bar dataKey="connects" stackId="a" fill="#2AC940" name="Connect" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="shares" stackId="a" fill="#29A8AC" name={actionsDenom === 'Social Active User' ? 'Share per Social Active User' : 'Share per Social Visitor'} radius={[0, 0, 0, 0]} barSize={32} />
+                        <Bar dataKey="copies" stackId="a" fill="#F3CA3E" name={actionsDenom === 'Social Active User' ? 'Copy per Social Active User' : 'Copy per Social Visitor'} />
+                        <Bar dataKey="connects" stackId="a" fill="#2AC940" name={actionsDenom === 'Social Active User' ? 'Connect per Social Active User' : 'Connect per Social Visitor'} radius={[4, 4, 0, 0]} />
                       </BarChart>
                     ) : (
                       <BarChart
@@ -415,7 +415,7 @@ const SocialDashboard = () => {
                         <Bar
                           dataKey="value"
                           fill={actionsView === 'Share' ? '#29A8AC' : actionsView === 'Copy' ? '#F3CA3E' : '#2AC940'}
-                          name={`${actionsView} per User`}
+                          name={`${actionsView} per ${actionsDenom === 'Social Active User' ? 'Social Active User' : 'Social Visitor'}`}
                           radius={[4, 4, 0, 0]}
                           barSize={32}
                         />
@@ -432,7 +432,7 @@ const SocialDashboard = () => {
                     </h3>
                     <button
                       onClick={() => setFollowersDenom(followersDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User')}
-                      className="px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      className="ml-4 px-3 py-1.5 text-xs font-medium rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
                     >
                       {followersDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User'}
                     </button>
@@ -447,7 +447,7 @@ const SocialDashboard = () => {
                       <YAxis tick={{ fontSize: 12 }} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend />
-                      <Bar dataKey="followers" fill="#29A8AC" name={followersDenom === 'Social Active User' ? 'Followers per Active User' : 'Followers per Visitor'} radius={[4, 4, 0, 0]} barSize={32} />
+                      <Bar dataKey="followers" fill="#29A8AC" name={followersDenom === 'Social Active User' ? 'Followers per Social Active User' : 'Followers per Social Visitor'} radius={[4, 4, 0, 0]} barSize={32} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

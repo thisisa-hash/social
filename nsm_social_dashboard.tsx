@@ -220,10 +220,14 @@ const SocialDashboard = () => {
                       tick={{ fontSize: 12 }}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend />
+                    <Legend payload={[
+                      { value: 'Social Active Users', type: 'line', color: '#2AC940' },
+                      { value: 'Social Onboarded Visitors', type: 'line', color: '#F3CA3E' },
+                      { value: 'Activity Rate %', type: 'rect', color: '#29A8AC' },
+                    ]} />
+                    <Bar yAxisId="left" dataKey="conversionRate" fill="#29A8AC" name="Activity Rate %" radius={[4, 4, 0, 0]} />
                     <Line yAxisId="right" type="monotone" dataKey="socialActive" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Social Active Users" />
                     <Line yAxisId="right" type="monotone" dataKey="socialOnboarded" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Social Onboarded Visitors" />
-                    <Bar yAxisId="left" dataKey="conversionRate" fill="#29A8AC" name="Activity Rate %" radius={[4, 4, 0, 0]} />
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>
@@ -283,7 +287,18 @@ const SocialDashboard = () => {
                         tick={{ fontSize: 12 }}
                       />
                       <Tooltip content={<CustomTooltip />} />
-                      <Legend />
+                      <Legend payload={[
+                        { value: bottomRightView === 'Coverage' ? 'Active Users with Social' : 'Social Onboarded Visitors', type: 'line', color: '#2AC940' },
+                        { value: 'Active Users', type: 'line', color: '#F3CA3E' },
+                        { value: bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %', type: 'rect', color: '#29A8AC' },
+                      ]} />
+                      <Bar
+                        yAxisId="left"
+                        dataKey={bottomRightView === 'Coverage' ? 'coverage' : 'adoptionRate'}
+                        fill="#29A8AC"
+                        name={bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %'}
+                        radius={[4, 4, 0, 0]}
+                      />
                       <Line
                         yAxisId="right"
                         type="monotone"
@@ -301,13 +316,6 @@ const SocialDashboard = () => {
                         strokeWidth={3}
                         dot={{ fill: '#F3CA3E', r: 5 }}
                         name="Active Users"
-                      />
-                      <Bar
-                        yAxisId="left"
-                        dataKey={bottomRightView === 'Coverage' ? 'coverage' : 'adoptionRate'}
-                        fill="#29A8AC"
-                        name={bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %'}
-                        radius={[4, 4, 0, 0]}
                       />
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -340,10 +348,14 @@ const SocialDashboard = () => {
                       tick={{ fontSize: 12 }}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend />
+                    <Legend payload={[
+                      { value: 'Copies', type: 'line', color: '#2AC940' },
+                      { value: 'Shared Posts', type: 'line', color: '#F3CA3E' },
+                      { value: 'Copy-to-Share Ratio', type: 'rect', color: '#29A8AC' },
+                    ]} />
+                    <Bar yAxisId="left" dataKey="copyToShare" fill="#29A8AC" name="Copy-to-Share Ratio" radius={[4, 4, 0, 0]} />
                     <Line yAxisId="right" type="monotone" dataKey="copies" stroke="#2AC940" strokeWidth={3} dot={{ fill: '#2AC940', r: 5 }} name="Copies" />
                     <Line yAxisId="right" type="monotone" dataKey="sharedPosts" stroke="#F3CA3E" strokeWidth={3} dot={{ fill: '#F3CA3E', r: 5 }} name="Shared Posts" />
-                    <Bar yAxisId="left" dataKey="copyToShare" fill="#29A8AC" name="Copy-to-Share Ratio" radius={[4, 4, 0, 0]} />
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>

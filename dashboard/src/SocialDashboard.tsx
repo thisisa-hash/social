@@ -398,6 +398,7 @@ const SocialDashboard = () => {
                     <div className="flex items-center gap-6">
                       <h3 className="text-lg font-semibold text-gray-800">
                         {actionsDenom === 'Social Active User' ? 'Actions per Social Active User' : 'Actions per Social Onboarded Visitor'}
+                        <InfoIcon id="act" text={"Social Onboarded Visitor → Has already completed Social Onboarding and Visited the Social Page.\nSocial Active User → Social Onboarded Visitor who shared, copied or connected."} />
                       </h3>
                       <button
                         onClick={() => setActionsDenom(actionsDenom === 'Social Active User' ? 'Social Onboarded Visitor' : 'Social Active User')}
@@ -405,7 +406,6 @@ const SocialDashboard = () => {
                       >
                         {actionsDenom === 'Social Active User' ? 'Social Onboarded Visitor' : 'Social Active User'}
                       </button>
-                      <InfoIcon id="act" text={"Social Onboarded Visitor → Has already completed Social Onboarding and Visited the Social Page.\nSocial Active User → Social Onboarded Visitor who shared, copied or connected."} />
                     </div>
                     <div className="flex gap-2">
                       {['All', 'Share', 'Copy', 'Connect'].map(v => (
@@ -472,6 +472,7 @@ const SocialDashboard = () => {
                   <div className="flex items-center gap-6 mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">
                       {followersDenom === 'Social Active User' ? 'Followers per Social Active User' : 'Followers per Social Onboarded Visitor'}
+                      <InfoIcon id="fol" text={"Social Onboarded Visitor → Has already completed Social Onboarding and Visited the Social Page.\nSocial Active User → Social Onboarded Visitor who shared, copied or connected."} />
                     </h3>
                     <button
                       onClick={() => setFollowersDenom(followersDenom === 'Social Active User' ? 'Social Onboarded Visitor' : 'Social Active User')}
@@ -479,7 +480,6 @@ const SocialDashboard = () => {
                     >
                       {followersDenom === 'Social Active User' ? 'Social Onboarded Visitor' : 'Social Active User'}
                     </button>
-                    <InfoIcon id="fol" text={"Social Onboarded Visitor → Has already completed Social Onboarding and Visited the Social Page.\nSocial Active User → Social Onboarded Visitor who shared, copied or connected."} />
                   </div>
                   <ResponsiveContainer width="100%" height={350}>
                     <BarChart data={enrichedData.map(w => ({

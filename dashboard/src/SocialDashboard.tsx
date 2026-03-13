@@ -85,13 +85,24 @@ const SocialDashboard = () => {
     avgFollowersPerActive: +(w.followers / w.socialActive).toFixed(2),
   }));
 
-  const InfoIcon = ({ text }: { text: string }) => (
-    <span className="ml-2 inline-flex items-center" title={text}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ cursor: 'pointer', flexShrink: 0 }}>
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="16" x2="12" y2="12" />
-        <line x1="12" y1="8" x2="12.01" y2="8" />
+  const [infoOpen, setInfoOpen] = useState<string | null>(null);
+  const InfoIcon = ({ id, text }: { id: string; text: string }) => (
+    <span style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', marginLeft: 6, verticalAlign: 'middle' }}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+        fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        style={{ cursor: 'pointer' }}
+        onClick={() => setInfoOpen(infoOpen === id ? null : id)}
+        onMouseEnter={() => setInfoOpen(id)}
+        onMouseLeave={() => setInfoOpen(null)}
+      >
+        <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
       </svg>
+      {infoOpen === id && (
+        <span style={{ position: 'absolute', left: 20, top: '50%', transform: 'translateY(-50%)', background: '#1f2937', color: '#fff', fontSize: 11, padding: '6px 10px', borderRadius: 6, whiteSpace: 'normal', width: 220, zIndex: 999, lineHeight: 1.4, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+          {text}
+        </span>
+      )}
     </span>
   );
 
@@ -213,10 +224,9 @@ const SocialDashboard = () => {
               {/* ── TOP: NSM — Conversion Rate ── */}
               <div className="bg-white rounded-lg shadow p-6 mb-6">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center">
-                    <h2 className="text-lg font-semibold text-gray-800">NSM — Activity Rate %</h2>
-                    <InfoIcon text="Social Onboarded Visitor → Has already completed Social Onboarding and Visited the Social Page. Social Active User → Social Onboarded Visitor who shared, copied or connected." />
-                  </div>
+                  <h2 className="text-lg font-semibold text-gray-800">NSM — Activity Rate %
+                    <InfoIcon id="nsm" text="Social Onboarded Visitor → Has already completed Social Onboarding and Visited the Social Page. Social Active User → Social Onboarded Visitor who shared, copied or connected." />
+                  </h2>
                 </div>
                 <ResponsiveContainer width="100%" height={350}>
                   <ComposedChart data={enrichedData}>
@@ -248,10 +258,9 @@ const SocialDashboard = () => {
               <div className="grid grid-cols-2 gap-6">
                 {/* ── Bottom Left: Onboardings ── */}
                 <div className="bg-white rounded-lg shadow p-6">
-                  <div className="flex items-center mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Onboardings</h3>
-                    <InfoIcon text="Users who completed the onboarding process." />
-                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Onboardings
+                    <InfoIcon id="onb" text="Users who completed the onboarding process." />
+                  </h3>
                   <ResponsiveContainer width="100%" height={350}>
                     <BarChart data={enrichedData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -269,15 +278,13 @@ const SocialDashboard = () => {
                 {/* ── Bottom Right: Coverage / Adoption Rate toggle ── */}
                 <div className="bg-white rounded-lg shadow p-6">
                   <div className="flex justify-between items-center mb-4">
-                    <div className="flex items-center">
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        {bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %'}
-                      </h3>
-                      <InfoIcon text={bottomRightView === 'Coverage'
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      {bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %'}
+                      <InfoIcon id="cov" text={bottomRightView === 'Coverage'
                         ? 'Share of Novibet Active Users with a Social Profile (Active Users with Social).'
                         : 'Share of Active Users with a Social Profile Who Visited the Social Page (Social Onboarded Visitors).'
                       } />
-                    </div>
+                    </h3>
                     <div className="flex gap-2">
                       {['Coverage', 'Adoption Rate'].map(v => (
                         <button

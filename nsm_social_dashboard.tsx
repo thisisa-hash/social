@@ -175,7 +175,7 @@ const SocialDashboard = () => {
           {/* Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">NSM Social Dashboard</h1>
-            <p className="text-sm text-gray-600 mt-1">Social Feature Analytics — {selectedPeriod} Level</p>
+            <p className="text-sm text-gray-600 mt-1">Social Performance Overview — {selectedPeriod} Level</p>
             <div className="flex gap-1 mt-4 border-b border-gray-200">
               {[
                 { id: 'nsm', label: 'Executive Overview' },

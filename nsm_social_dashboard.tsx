@@ -200,7 +200,7 @@ const SocialDashboard = () => {
             <div className="flex gap-1 mt-4 border-b border-gray-200">
               {[
                 { id: 'nsm', label: 'Executive Overview' },
-                { id: 'engagement', label: 'Engagement' },
+                { id: 'engagement', label: 'Engagement Metrics' },
               ].map(tab => (
                 <button
                   key={tab.id}

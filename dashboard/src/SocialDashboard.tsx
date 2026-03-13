@@ -198,8 +198,8 @@ const SocialDashboard = () => {
             <p className="text-sm text-gray-600 mt-1">Social Performance Overview — {selectedPeriod} Level</p>
             <div className="flex gap-1 mt-4 border-b border-gray-200">
               {[
-                { id: 'nsm', label: 'NSM' },
-                { id: 'engagement', label: 'Engagement' },
+                { id: 'nsm', label: 'Executive Overview' },
+                { id: 'engagement', label: 'Engagement Metrics' },
               ].map(tab => (
                 <button
                   key={tab.id}

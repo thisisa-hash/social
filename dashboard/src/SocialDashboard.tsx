@@ -85,6 +85,20 @@ const SocialDashboard = () => {
     avgFollowersPerActive: +(w.followers / w.socialActive).toFixed(2),
   }));
 
+  const InfoIcon = ({ text }: { text: string }) => (
+    <div className="relative inline-block ml-2 group">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cursor-pointer hover:stroke-gray-600">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="16" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12.01" y2="8" />
+      </svg>
+      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded shadow-lg w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none">
+        {text}
+        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800" />
+      </div>
+    </div>
+  );
+
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ color: string; name: string; value: number }>; label?: string }) => {
     if (active && payload && payload.length) {
       return (
@@ -203,7 +217,10 @@ const SocialDashboard = () => {
               {/* ── TOP: NSM — Conversion Rate ── */}
               <div className="bg-white rounded-lg shadow p-6 mb-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-semibold text-gray-800">NSM — Activity Rate %</h2>
+                  <div className="flex items-center">
+                    <h2 className="text-lg font-semibold text-gray-800">NSM — Activity Rate %</h2>
+                    <InfoIcon text="Social Onboarded Visitor → Has already completed Social Onboarding and Visited the Social Page. Social Active User → Social Onboarded Visitor who shared, copied or connected." />
+                  </div>
                 </div>
                 <ResponsiveContainer width="100%" height={350}>
                   <ComposedChart data={enrichedData}>
@@ -235,7 +252,10 @@ const SocialDashboard = () => {
               <div className="grid grid-cols-2 gap-6">
                 {/* ── Bottom Left: Onboardings ── */}
                 <div className="bg-white rounded-lg shadow p-6">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Onboardings</h3>
+                  <div className="flex items-center mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Onboardings</h3>
+                    <InfoIcon text="Users who completed the onboarding process." />
+                  </div>
                   <ResponsiveContainer width="100%" height={350}>
                     <BarChart data={enrichedData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -253,9 +273,15 @@ const SocialDashboard = () => {
                 {/* ── Bottom Right: Coverage / Adoption Rate toggle ── */}
                 <div className="bg-white rounded-lg shadow p-6">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      {bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %'}
-                    </h3>
+                    <div className="flex items-center">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %'}
+                      </h3>
+                      <InfoIcon text={bottomRightView === 'Coverage'
+                        ? 'Share of Novibet Active Users with a Social Profile (Active Users with Social).'
+                        : 'Share of Active Users with a Social Profile Who Visited the Social Page (Social Onboarded Visitors).'
+                      } />
+                    </div>
                     <div className="flex gap-2">
                       {['Coverage', 'Adoption Rate'].map(v => (
                         <button
@@ -288,7 +314,7 @@ const SocialDashboard = () => {
                       <Tooltip content={<CustomTooltip />} />
                       <Legend itemSorter={() => 0} payload={[
                         { value: bottomRightView === 'Coverage' ? 'Active Users with Social' : 'Social Onboarded Visitors', type: 'line', color: '#2AC940' },
-                        { value: 'Active Users', type: 'line', color: '#F3CA3E' },
+                        { value: bottomRightView === 'Coverage' ? 'Active Users' : 'Active Users with Social', type: 'line', color: '#F3CA3E' },
                         { value: bottomRightView === 'Coverage' ? 'Coverage %' : 'Adoption Rate %', type: 'rect', color: '#29A8AC' },
                       ]} />
                       <Bar
@@ -314,7 +340,7 @@ const SocialDashboard = () => {
                         stroke="#F3CA3E"
                         strokeWidth={3}
                         dot={{ fill: '#F3CA3E', r: 5 }}
-                        name="Active Users"
+                        name={bottomRightView === 'Coverage' ? 'Active Users' : 'Active Users with Social'}
                       />
                     </ComposedChart>
                   </ResponsiveContainer>

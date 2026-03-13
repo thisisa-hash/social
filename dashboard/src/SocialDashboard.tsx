@@ -405,6 +405,7 @@ const SocialDashboard = () => {
                       >
                         {actionsDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User'}
                       </button>
+                      <InfoIcon id="act" text={"Social Onboarded Visitor → Has already completed Social Onboarding and Visited the Social Page.\nSocial Active User → Social Onboarded Visitor who shared, copied or connected."} />
                     </div>
                     <div className="flex gap-2">
                       {['All', 'Share', 'Copy', 'Connect'].map(v => (
@@ -478,6 +479,7 @@ const SocialDashboard = () => {
                     >
                       {followersDenom === 'Social Active User' ? 'Social Visitor' : 'Social Active User'}
                     </button>
+                    <InfoIcon id="fol" text={"Social Onboarded Visitor → Has already completed Social Onboarding and Visited the Social Page.\nSocial Active User → Social Onboarded Visitor who shared, copied or connected."} />
                   </div>
                   <ResponsiveContainer width="100%" height={350}>
                     <BarChart data={enrichedData.map(w => ({

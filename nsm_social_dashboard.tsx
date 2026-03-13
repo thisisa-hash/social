@@ -361,7 +361,9 @@ const SocialDashboard = () => {
               {/* ── TOP: Copy-to-Share Ratio ── */}
               <div className="bg-white rounded-lg shadow p-6 mb-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-semibold text-gray-800">Copy-to-Share Ratio</h2>
+                  <h2 className="text-lg font-semibold text-gray-800">Copy-to-Share Ratio
+                    <InfoIcon id="cts" text="Average Number of Copy Actions per Post." />
+                  </h2>
                 </div>
                 <ResponsiveContainer width="100%" height={350}>
                   <ComposedChart data={enrichedData}>
